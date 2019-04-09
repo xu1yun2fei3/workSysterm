@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Yuangongxinxi">
+	
+	<!-- 得到记录条数-->
+	<select id="selecteListCount" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(*) from (
+			select a.id, a.yuangongid , a.gonghao , a.xingming , a.xingbie , a.ruzhishijian , a.suozaibumen , a.suozaigangwei , a.gerenjianli , a.lianxifangshi , a.erjiguanlianzd , a.fuJian ,a.itime,a.detail,a.deleteFlag
+		    from yuangongxinxi a
+			where 1=1 
+			<isNotEmpty prepend="and" property="id">
+				a.id<![CDATA[ = ]]>#id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="yuangongidSearch">
+a.yuangongid like '%$yuangongidSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="gonghaoSearch">
+a.gonghao like '%$gonghaoSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="xingmingSearch">
+a.xingming like '%$xingmingSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="xingbieSearch">
+a.xingbie like '%$xingbieSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="ruzhishijianSearch">
+a.ruzhishijian like '%$ruzhishijianSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="suozaibumenSearch">
+a.suozaibumen like '%$suozaibumenSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="suozaigangweiSearch">
+a.suozaigangwei like '%$suozaigangweiSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="gerenjianliSearch">
+a.gerenjianli like '%$gerenjianliSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="lianxifangshiSearch">
+a.lianxifangshi like '%$lianxifangshiSearch$%' 
+</isNotEmpty>
+
+			<isNotEmpty prepend="and" property="itimeStartSearch">
+				DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ >= ]]> DATE_FORMAT(#itimeStartSearch#,'%Y-%m-%d %T')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="itimeEndSearch">
+				DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ <= ]]> DATE_FORMAT(#itimeEndSearch#,'%Y-%m-%d %T')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="operatorId">
+				a.operatorId<![CDATA[ = ]]>#operatorId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="deleteFlagSearch">
+				a.deleteFlag<![CDATA[ = ]]>#deleteFlagSearch#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="erjiguanlianzd">
+				a.erjiguanlianzd<![CDATA[ = ]]>#erjiguanlianzd#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="dataRight">
+				$dataRight$
+			</isNotEmpty>
+			<isNotEmpty property="orderby">
+				order by $orderby$
+			</isNotEmpty>
+		)table_a
+	</select>
+	
+	<!-- 得到记录-->
+	<select id="selecteList" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select a.id, a.yuangongid , a.gonghao , a.xingming , a.xingbie , a.ruzhishijian , a.suozaibumen , a.suozaigangwei , a.gerenjianli , a.lianxifangshi , a.erjiguanlianzd , a.fuJian ,a.itime, a.detail,a.deleteFlag
+		from yuangongxinxi a
+		where 1=1 
+		<isNotEmpty prepend="and" property="id">
+			a.id<![CDATA[ = ]]>#id#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="yuangongidSearch">
+a.yuangongid like '%$yuangongidSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="gonghaoSearch">
+a.gonghao like '%$gonghaoSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="xingmingSearch">
+a.xingming like '%$xingmingSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="xingbieSearch">
+a.xingbie like '%$xingbieSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="ruzhishijianSearch">
+a.ruzhishijian like '%$ruzhishijianSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="suozaibumenSearch">
+a.suozaibumen like '%$suozaibumenSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="suozaigangweiSearch">
+a.suozaigangwei like '%$suozaigangweiSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="gerenjianliSearch">
+a.gerenjianli like '%$gerenjianliSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="lianxifangshiSearch">
+a.lianxifangshi like '%$lianxifangshiSearch$%' 
+</isNotEmpty>
+
+		<isNotEmpty prepend="and" property="itimeStartSearch">
+			DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ >= ]]> DATE_FORMAT(#itimeStartSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="itimeEndSearch">
+			DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ <= ]]> DATE_FORMAT(#itimeEndSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="operatorId">
+				a.operatorId<![CDATA[ = ]]>#operatorId#
+			</isNotEmpty>
+		<isNotEmpty prepend="and" property="deleteFlagSearch">
+			a.deleteFlag<![CDATA[ = ]]>#deleteFlagSearch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="erjiguanlianzd">
+				a.erjiguanlianzd<![CDATA[ = ]]>#erjiguanlianzd#
+			</isNotEmpty>
+		<isNotEmpty prepend="and" property="dataRight">
+			$dataRight$
+		</isNotEmpty>
+		<isNotEmpty property="orderby">
+			order by $orderby$
+		</isNotEmpty>
+	</select>
+	
+	
+	<!-- 新增-->
+	<update id="insertObj" parameterClass="java.util.Map">
+		insert into yuangongxinxi
+		(yuangongid,gonghao,xingming,xingbie,ruzhishijian,suozaibumen,suozaigangwei,gerenjianli,lianxifangshi, fuJian ,operatorId,itime,detail,erjiguanlianzd) 
+		values(#yuangongid#,#gonghao#,#xingming#,#xingbie#,#ruzhishijian#,#suozaibumen#,#suozaigangwei#,#gerenjianli#,#lianxifangshi#,#fuJian#,#operatorId#,(select date_format(now(),'%Y-%m-%d %H:%i:%S ') from dual),#detail#,#erjiguanlianzd#)
+	</update>
+	
+	<!-- 修改-->
+	<update id="updateObj" parameterClass="java.util.Map">
+		update yuangongxinxi 
+		set yuangongid=#yuangongid#,gonghao=#gonghao#,xingming=#xingming#,xingbie=#xingbie#,ruzhishijian=#ruzhishijian#,suozaibumen=#suozaibumen#,suozaigangwei=#suozaigangwei#,gerenjianli=#gerenjianli#,lianxifangshi=#lianxifangshi#<isNotEmpty prepend="" property="fuJian">,fuJian=#fuJian#</isNotEmpty>,
+		      itime=(select date_format(now(),'%Y-%m-%d %H:%i:%S ') from dual),detail=#detail#
+		where id=#id#
+	</update>
+	
+	<!-- 冻结或解冻-->
+	<update id="doDeleOrUnDele" parameterClass="java.util.Map">
+		update yuangongxinxi 
+		set deleteFlag=#deleteFlag#
+		where id in ( $id$ )
+	</update>
+	
+	<update id="doShenPi" parameterClass="java.util.Map">
+		update yuangongxinxi 
+		set shenpi=#shenpi#
+		where id in ( $id$ )
+	</update>
+	
+	<select id="getTuPianIndex" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select IFNULL(a.tuPian,'') as tuPian
+		from yuangongxinxi a
+		where 1=1
+		<isNotEmpty prepend="and" property="id">
+			a.id<![CDATA[ = ]]>#id#
+		</isNotEmpty>
+	</select>
+	
+	<update id="updateTuPianIndex" parameterClass="java.util.Map">
+		update yuangongxinxi 
+		set tuPian=#tuPianIndex#
+		where id in ( $id$ )
+	</update>
+	
+	<update id="insertTuPian" parameterClass="java.util.Map">
+		insert into table_pic
+		(tuPianIndex,picName,picPath,operatorId,itime,detail) 
+		values(#tuPianIndex#,#picName#,#picPath#,#operatorId#,(select date_format(now(),'%Y-%m-%d %H:%i:%S ') from dual),#detail#)
+	</update>
+	
+	<select id="selectePicListCount" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(*) from (
+			select id,tuPianIndex,picName,picPath,operatorId,itime,detail
+		    from table_pic
+			where 1=1 
+			<isNotEmpty prepend="and" property="id">
+				tuPianIndex<![CDATA[ = ]]>( select distinct tuPian from yuangongxinxi where id=#id# and deleteFlag=0 )
+			</isNotEmpty>
+		)table_a
+	</select>
+	
+	<select id="selectePicList" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select id,tuPianIndex,picName,picPath,operatorId,itime,detail
+		from table_pic
+		where 1=1 
+		<isNotEmpty prepend="and" property="id">
+			tuPianIndex<![CDATA[ = ]]>( select distinct tuPian from yuangongxinxi where id=#id# and deleteFlag=0 )
+		</isNotEmpty>
+	</select>
+	
+	<update id="doDelePic" parameterClass="java.util.Map">
+		delete from table_pic
+		where id in ( $id$ )
+	</update>
+	
+	<update id="doDeleErJiData" parameterClass="java.util.Map">
+		delete from $tableName$
+		where erjiguanlianzd in ( $id$ )
+	</update>
+	
+</sqlMap>
+
+
+
+
+
+
+
+
+

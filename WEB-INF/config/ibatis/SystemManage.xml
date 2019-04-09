@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SystemManage">
+
+	<!-- 判断登陆用户的帐号和密码-->
+	<select id="select_user_acct" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(a.id) 
+		from user_info a 
+		where a.userAcct='$userAcct$' and userPass='$userPass$' and a.deleteFlag=0
+	</select>
+	
+	<!-- 获取当前登陆人的菜单 -->
+	<select id="select_user_menu" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct table_1.* , 
+		       (
+		          select count(menu_info.id) 
+		          from menu_info 
+		          where f_id=table_1.id
+		       ) as leaf_count
+		from 
+		      ( 
+		         select distinct id,menu_name as text,f_id,menu_status,menu_todo,menu_type 
+		         from menu_info
+			     where ( 
+			     	id in 
+			         ( 
+			            select menu_id 
+			            from user_menu 
+			            where user_id = ( 
+			                select id 
+			                from user_info 
+			                where userAcct = '$userAcct$'
+			            ) 
+			         ) 
+			         or
+			         (
+			         	is_default=1
+			         )
+			         or
+			         id in 
+			         ( 
+			            select menu_id 
+			            from role_menu 
+			            where role_id = ( 
+			                select userType 
+			                from user_info 
+			                where userAcct = '$userAcct$'
+			            ) 
+			         ) 
+			        ) 
+			     <isNotEmpty prepend="and" property="nowId">
+			         f_id = #nowId#
+				  </isNotEmpty>   
+			      and menu_status = 1 
+			      order by f_id,menu_index , id
+	          )table_1
+	</select>
+	
+	<select id="select_user_menu1" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct table_1.* , 
+		       (
+		          select count(menu_info.id) 
+		          from menu_info 
+		          where f_id=table_1.id
+		       ) as leaf_count
+		from 
+		      ( 
+		         select distinct b.id,b.menu_name as text,b.f_id,b.menu_status,b.menu_todo,b.menu_type 
+		         from menu_info b
+			     where 
+			     	(
+				     	b.id in 
+				         ( 
+				            select menu_id 
+				            from user_menu 
+				            where user_id = ( 
+				                select id 
+				                from user_info 
+				                where userAcct ='$userAcct$'
+				            ) 
+				         ) 
+			      		or(
+			      			b.is_default=1
+			      		)
+			      		 or
+				         id in 
+				         ( 
+				            select menu_id 
+				            from role_menu 
+				            where role_id = ( 
+				                select userType 
+				                from user_info 
+				                where userAcct = '$userAcct$'
+				            ) 
+				         ) 
+			      )
+			      and b.menu_status = 1 and (  ( select a.menu_status from menu_info a where  a.id=b.f_id ) = 1 or b.f_id=0 )
+			      order by f_id, id
+	          )table_1
+	</select>
+	
+	
+	<!-- 获取当前系统所有菜单 -->
+	<select id="getAllSysMenu" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct a.menu_todo
+		from menu_info a
+		where 1=1 and a.status=1
+		<isNotEmpty prepend="and" property="menu_type">
+			a.menu_type <![CDATA[ = ]]> #menu_type#
+		</isNotEmpty>
+	</select>
+	
+	<!-- 获取系统用户列表信息 -->
+	<select id="selectSysMemberList" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct a.id,a.userAcct,a.deleteFlag,a.userPass,a.userType,c.jiaosemingchen as userTypeName ,a.status,
+		       b.userName,b.userSex,b.userAge,b.userPhone,b.registerTime,b.userDoc,b.userDetail,
+		       b.danwei,b.bumen,b.zhiwei,b.idcard
+		from user_info a left join systemrolemanage c on a.userType=c.id , user_info_detail b
+		where a.id=b.userId
+		<isNotEmpty prepend="and" property="userNameSearch">
+			b.userName like '%$userNameSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="registerTimeBeginSearch">
+			b.registerTime<![CDATA[ >= ]]>'$registerTimeBeginSearch$'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="registerTimeEndSearch">
+			b.registerTime<![CDATA[ <= ]]>'$registerTimeEndSearch$'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userSexHidden">
+			b.userSex='$userSexHidden$'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userAcctSearch">
+			a.userAcct like '%$userAcctSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deleteFlagHidden">
+			a.deleteFlag=#deleteFlagHidden#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userAgeSearch">
+			b.userAge=#userAgeSearch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userPhoneSearch">
+			b.userPhone like '%$userPhoneSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userAcctEqual">
+			a.userAcct = '$userAcctEqual$'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userPassEqual">
+			a.userPass = '$userPassEqual$'
+		</isNotEmpty>
+		
+		<isNotEmpty prepend="and" property="danweiSearch">
+			b.danwei like '%$danweiSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="bumenSearch">
+			b.bumen like '%$bumenSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="zhiweiSearch">
+			b.zhiwei like '%$zhiweiSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="idcardSearch">
+			b.idcard like '%$idcardSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="statusSearch">
+			a.status=#statusSearch#
+		</isNotEmpty>
+		
+		<isNotEmpty prepend="" property="orderby">
+			order by $orderby$
+		</isNotEmpty>
+	</select>
+	
+	<!-- 获取系统用户列表信息条数 -->
+	<select id="selectSysMemberListCount" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(*) 
+		from (
+			select distinct a.id,a.userAcct,a.deleteFlag,a.userPass,a.userType,c.jiaosemingchen as userTypeName ,a.status,
+			       b.userName,b.userSex,b.userAge,b.userPhone,b.registerTime,
+			       b.danwei,b.bumen,b.zhiwei,b.idcard
+			from user_info a left join systemrolemanage c on a.userType=c.id , user_info_detail b
+			where a.id=b.userId
+			<isNotEmpty prepend="and" property="userNameSearch">
+				b.userName like '%$userNameSearch$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="registerTimeBeginSearch">
+				b.registerTime<![CDATA[ >= ]]>'$registerTimeBeginSearch$'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="registerTimeEndSearch">
+				b.registerTime<![CDATA[ <= ]]>'$registerTimeEndSearch$'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userSexHidden">
+				b.userSex='$userSexHidden$'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userAcctSearch">
+				a.userAcct like '%$userAcctSearch$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userAcctInsert">
+				a.userAcct = '$userAcctInsert$'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="deleteFlagHidden">
+				a.deleteFlag=#deleteFlagHidden#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userAgeSearch">
+				b.userAge=#userAgeSearch#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userPhoneSearch">
+				b.userPhone like '%$userPhoneSearch$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userAcctEqual">
+				a.userAcct = '$userAcctEqual$'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="userPassEqual">
+				a.userPass = '$userPassEqual$'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="isUniqueUserId">
+				a.id <![CDATA[ <> ]]>#isUniqueUserId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="danweiSearch">
+				b.danwei like '%$danweiSearch$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="bumenSearch">
+				b.bumen like '%$bumenSearch$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="zhiweiSearch">
+				b.zhiwei like '%$zhiweiSearch$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="idcardSearch">
+				b.idcard like '%$idcardSearch$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="statusSearch">
+				a.status=#statusSearch#
+			</isNotEmpty>
+		)table_1
+	</select>
+	
+	<!-- 得到当前用户最大ID -->
+	<select id="getMaxUserId" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select max(a.id) as maxId
+		from user_info a
+	</select>
+	
+	<!-- 新增系统用户详细信息 -->
+	<insert id="insertSysUserInfoDetail">
+		insert into user_info_detail(userSex,userAge,userId,userPhone,userName,registerTime,userDoc,userDetail,bumen,zhiwei,idcard)
+		values('$userSexHidden$',#userAge#,#id#,'$userPhone$','$userName$','$registerTime$','$userDoc$','$userDetail$',#bumen#,#zhiwei#,#idcard#)
+	</insert>
+	
+	<!-- 新增系统用户信息 -->
+	<insert id="insertSysUserInfo">
+		insert into user_info(id,userAcct,userPass,userType,userName,deleteFlag,status)
+		values(#id#,'$userAcct$','$userPass$',#userType#,'$userName$',#deleteFlag#,#status#)
+	</insert>
+	
+	<!-- 编辑系统用户详细信息 -->
+	<update id="updateSysUserInfoDetail">
+		update user_info_detail a 
+		set a.userSex='$userSexHidden$',a.userAge=#userAge#,a.userPhone='$userPhone$',a.userName='$userName$',
+		    a.userDetail='$userDetail$',a.bumen=#bumen#,a.zhiwei=#zhiwei#,a.idcard=#idcard#
+		    <isNotEmpty prepend="," property="userDoc">
+				a.userDoc='$userDoc$'
+			</isNotEmpty>
+		where a.userId=#id#
+	</update>
+	
+	<!-- 编辑系统用户信息 -->
+	<update id="updateSysUserInfo">
+		update user_info a 
+		set a.userAcct='$userAcct$',a.userPass='$userPass$',a.userName='$userName$',a.userType=#userType#
+		where a.id=#id#
+	</update>
+	
+	<!-- 冻结或解冻系统用户 -->
+	<update id="doDeleOrUnDele">
+		update user_info a 
+		set a.deleteFlag=#deleteFlag#
+		where a.id in ( $id$ )
+	</update>
+	
+	<!-- 修改用户状态 -->
+	<update id="doUpdateStatus">
+		update user_info a 
+		set a.status=#status#
+		where a.id=#id#
+	</update>
+	
+	<!-- 系统设置  -->
+	<select id="selectSettingList" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct a.id,a.systemName,a.systemDesigner,a.loginPageStyle,a.systemSkin,a.systemSkinName,
+		            a.topPanDisplay,a.southPanDisplay,a.menuRegion,a.menuCollapse,a.menuAnimate,a.menuBackground,a.isApprove,
+		            a.houTaiZhuTi,a.qianTaiZhuTi,a.buttonPlace,a.searchPlace,a.zhuCeZhuTi
+		from system_info a
+		where 1=1
+	</select>
+	
+	<!-- 系统设置条数 -->
+	<select id="selectSettingListCount" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(*) 
+		from (
+			select distinct a.id,a.systemName,a.systemDesigner,a.loginPageStyle,a.systemSkin,a.systemSkinName,
+			            a.topPanDisplay,a.southPanDisplay,a.menuRegion,a.menuCollapse,a.menuAnimate,a.menuBackground,a.isApprove
+			from system_info a
+			where 1=1
+		)table_1
+	</select>
+	
+	<update id="updateSetting">
+		update system_info a 
+		set a.systemName=#systemName#,a.systemDesigner=#systemDesigner#,a.loginPageStyle=#loginPageStyle#,a.systemSkin=#systemSkin#,a.systemSkinName=#systemSkinName#,
+		       a.topPanDisplay=#topPanDisplay#,a.southPanDisplay=#southPanDisplay#,a.menuRegion=#menuRegion#,a.menuCollapse=#menuCollapse#,a.menuAnimate=#menuAnimate#,
+		       a.menuBackground=#menuBackground#,a.isApprove=#isApprove#,a.houTaiZhuTi=#houTaiHidden#,a.qianTaiZhuTi=#qianTaiHidden#,a.buttonPlace=#buttonPlace#,a.searchPlace=#searchPlace#,
+		       a.zhuCeZhuTi=#zhuCeHidden#
+		where a.id=#id#
+	</update>
+	
+	<!-- 系统管理员  -->
+	<select id="selectAdminList" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct a.id
+		from user_info a
+		where 1=1 and a.userType=1
+	</select>
+	
+	<insert id="insertUserMenu">
+		insert into user_menu(user_id,menu_id)
+		values(#user_id#,#menu_id#)
+	</insert>
+	
+	<!-- 编辑用户默认菜单 -->
+	<update id="updateUserDefaultMenu1">
+		update menu_info  
+		set is_default=0
+	</update>
+	
+	<!-- 编辑用户默认菜单 -->
+	<update id="updateUserDefaultMenu2">
+		update menu_info  
+		set is_default=1
+		where id=#menuId#
+	</update>
+	
+	<!-- 设置前台显示菜单 -->
+	<update id="updateFontDisplayMenu">
+		update menu_info  
+		set frontS=1
+		where id in ($menuIdIn$)
+	</update>
+	
+	<!-- 设置前台显示菜单 -->
+	<update id="updateFontDisplayMenu0">
+		update menu_info  
+		set frontS=0
+	</update>
+	
+</sqlMap>
+
+
+
+
+
+
+
+
+

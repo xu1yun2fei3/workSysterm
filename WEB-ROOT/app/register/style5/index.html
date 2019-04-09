@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/register/style5/resources/styles/clicki.web.css?V=20120501" media="screen" />
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/register/style5/resources/styles/clicki.loginandreg.css?V=20120501" media="screen" />
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/register/style5/resources/styles/clicki.webkitanimation.css?V=20120501" media="screen" />
+<title>新用户注册</title>
+<!--[if lte IE 9 ]><link rel="stylesheet" href="/WEB-ROOT/app/register/style4/resources/styles/clicki.iehotfix.css?V=20120501" /><![endif]-->
+<!--[if lte IE 9]>
+<style>
+body {background:#2f7fb2 url(/WEB-ROOT/app/register/style4/resources/styles/images/topbg_01.png?V=20120501) top center no-repeat;}
+html{height:100%;overflow:hidden;background:#2f7fb2 url(/WEB-ROOT/app/register/style4/resources/styles/images/topbg_01.png?V=20120501) top center no-repeat;}
+</style>
+<![endif]-->
+
+  <meta charset="utf-8" /><link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+<script type="text/javascript">
+	function doSubmit(){
+		    var userAcct = document.getElementById("userAcct").value ; 
+		    var userName = document.getElementById("userName").value ; 
+			var userPass = document.getElementById("userPass").value ; 
+			if( userAcct == "" ){
+				alert( "用户名为空，请填写！" );
+				return ;
+			}
+			if( userPass == "" ){
+				alert( "登录密码为空，请填写！" );
+				return ;
+			}
+			if( userName == "" ){
+				alert( "昵称为空，请填写！" );
+				return ;
+			}
+			
+			Ext.Ajax.request({
+				waitMsg : '数据提交中......',
+				url : '/login.do',
+				method : 'POST',
+				success : function(response, options) {
+					var responseArray = Ext.util.JSON.decode(response.responseText);
+					if(responseArray.success){
+						Ext.MessageBox.alert( "系统提示","注册成功！" , function(){ window.location.href = "/" ; });
+						
+					}else{
+						Ext.MessageBox.alert( responseArray.msg );
+					}
+				},
+				params : {
+					flag : "doRegister",
+					userAcct : userAcct ,
+					userPass : userPass , 
+					userName : userName
+				}
+			});
+			
+		}
+</script>
+
+
+</head>
+<body>
+
+<div class="theCenterBox" style="">
+  <style>
+.theCenterBox{width:670px; margin-top:200px;}
+</style>
+  <div class="theLoginBox" style="width:657px">
+    <div class="loginTxt"> <font color="blue">注册新账号</font>  </div>
+    <form id="leftForm" action="reg.html" method="post">
+      <div class="theLoginArea" id="loginBox">
+        <p style="position: relative;">
+          <label>用户名：</label>
+          <input  name="userAcct" id="userAcct" type="text" maxlength="18" />
+          <span>请输入您的用户名</span> </p>
+        <p style="position: relative;">
+          <label>密码：</label>
+          <input name="userPass" id="userPass" type="password" maxlength="18" />
+          <span>请输入您的密码</span> </p>
+        <p style="position: relative;">
+          <label>昵称：</label>
+          <input  name="userName" id="userName" type="text" maxlength="18" />
+          <span>请输入您的昵称</span> </p>
+        <div class="loginSubmitBnt">
+          <div class="reg_submit">
+            <input name="userSubmit" class="theSubmitButton" value="" type="button" onclick="doSubmit();" />
+          </div>
+        </div>
+      </div>
+      <div class="theRegArea fixRegHeight" id="reg_reg">
+        
+        <h2>已经有账号？</h2>
+        <br/>
+        <a class="reg_login" href="/"></a> </div>
+    </form>
+  </div>
+  
+ 
+</div>
+</body>
+</html>

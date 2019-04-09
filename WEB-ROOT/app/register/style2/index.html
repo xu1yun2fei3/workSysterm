@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>新用户注册</title>
+            
+<link href="/WEB-ROOT/app/register/style2/css/style.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+
+<script type="text/javascript" src="/WEB-ROOT/app/register/style2/js/jquery-1.7.2.js"></script>
+
+</head>
+<body>
+<!-- 代码 开始 -->
+<div class="wrap">
+	<div class="banner-show" id="js_ban_content">
+		<div class="cell bns-01">
+			<div class="con">
+			</div>
+		</div>
+		<div class="cell bns-02" style="display:none;">
+			<div class="con">
+				<a href="/" target="_blank" class="banner-link">
+				<i></i></a> </div>
+		</div>
+		<div class="cell bns-03" style="display:none;">
+			<div class="con">
+				<a href="/" target="_blank" class="banner-link">
+				<i></i></a> </div>
+		</div>
+	</div>
+	<div class="banner-control" id="js_ban_button_box">
+		<a href="javascript:;" class="left">左</a>
+		<a href="javascript:;" class="right">右</a>
+	</div>
+<script type="text/javascript">
+;(function(){
+	
+	var defaultInd = 0;
+	var list = $('#js_ban_content').children();
+	var count = 0;
+	var change = function(newInd, callback){
+		if(count) return;
+		count = 2;
+		$(list[defaultInd]).fadeOut(400, function(){
+			count--;
+			if(count <= 0){
+				if(start.timer) window.clearTimeout(start.timer);
+				callback && callback();
+			}
+		});
+		$(list[newInd]).fadeIn(400, function(){
+			defaultInd = newInd;
+			count--;
+			if(count <= 0){
+				if(start.timer) window.clearTimeout(start.timer);
+				callback && callback();
+			}
+		});
+	}
+	
+	var next = function(callback){
+		var newInd = defaultInd + 1;
+		if(newInd >= list.length){
+			newInd = 0;
+		}
+		change(newInd, callback);
+	}
+	
+	var start = function(){
+		if(start.timer) window.clearTimeout(start.timer);
+		start.timer = window.setTimeout(function(){
+			next(function(){
+				start();
+			});
+		}, 8000);
+	}
+	
+	start();
+	
+	$('#js_ban_button_box').on('click', 'a', function(){
+		var btn = $(this);
+		if(btn.hasClass('right')){
+			//next
+			next(function(){
+				start();
+			});
+		}
+		else{
+			//prev
+			var newInd = defaultInd - 1;
+			if(newInd < 0){
+				newInd = list.length - 1;
+			}
+			change(newInd, function(){
+				start();
+			});
+		}
+		return false;
+	});
+	
+})();
+</script>
+
+<script type="text/javascript">
+var FancyForm=function(){
+	return{
+		inputs:".reg-form input",
+		setup:function(){
+			var a=this;bu
+			this.inputs=$(this.inputs);
+			a.inputs.each(function(){
+				var c=$(this);
+				a.checkVal(c)
+			});
+			a.inputs.live("keyup blur",function(){
+				var c=$(this);
+				a.checkVal(c);
+			});
+		},checkVal:function(a){
+			a.val().length>0?a.parent("div").addClass("val"):a.parent("div").removeClass("val")
+		}
+	}
+}();
+
+function clearLab( labId ){
+	document.getElementById( labId ).innerHTML = "";
+}
+
+function doSubmit(){
+    var userAcct = document.getElementById("userAcct").value ; 
+    var userName = document.getElementById("userName").value ; 
+	var userPass = document.getElementById("userPass").value ; 
+	if( userAcct == "" ){
+		alert( "登录帐号为空，请填写！" );
+		return ;
+	}
+	if( userPass == "" ){
+		alert( "登录密码为空，请填写！" );
+		return ;
+	}
+	if( userName == "" ){
+		alert( "用户昵称为空，请填写！" );
+		return ;
+	}
+	
+	Ext.Ajax.request({
+		waitMsg : '数据提交中......',
+		url : '/login.do',
+		method : 'POST',
+		success : function(response, options) {
+			var responseArray = Ext.util.JSON.decode(response.responseText);
+			if(responseArray.success){
+				Ext.MessageBox.alert( "系统提示","注册成功！" , function(){ window.location.href = "/" ; });
+				
+			}else{
+				Ext.MessageBox.alert( responseArray.msg );
+			}
+		},
+		params : {
+			flag : "doRegister",
+			userAcct : userAcct ,
+			userPass : userPass , 
+			userName : userName
+		}
+	});
+	
+}
+			
+</script>
+
+
+	<div class="container">
+		<div class="register-box">
+			<div class="reg-slogan">
+				新用户注册</div>
+			<div class="reg-form" id="js-form-mobile">
+				<br>
+				<br>
+				<div class="cell">
+					<label for="js-mobile_ipt" id="userAcctLab">登录帐号</label>
+					<input type="text" name="userAcct" id="userAcct" class="text" maxlength="18"  onclick="clearLab( 'userAcctLab' );"/>
+				</div>
+				<div class="cell">
+					<label for="userPassLab" id="userPassLab">登录密码</label>
+					<input type="password" name="userPass" id="userPass" class="text" maxlength="18" onclick="clearLab( 'userPassLab' );"/>
+				</div>
+				<div class="cell">
+					<label for="js-mobile_ipt" id="userNameLab">用户昵称</label>
+					<input type="text" name="userName" id="userName" class="text" maxlength="18"  onclick="clearLab( 'userNameLab' );"/>
+				</div>
+				<div class="bottom">
+					<a id="js-mobile_btn" href="javascript:doSubmit();" class="button btn-green">
+					立即注册</a></div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	//FancyForm.setup();
+});
+</script>
+
+</body>
+</html>

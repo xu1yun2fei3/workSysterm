@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserManage">
+	
+	<!-- 得到注册用户记录条数-->
+	<select id="selectUserListCount" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(a.id) from user_info a
+		where 1=1 
+		<isNotEmpty prepend="and" property="userAcct">
+			a.userAcct like '%$userAcct$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deleteFlag">
+			a.deleteFlag=#deleteFlag#
+		</isNotEmpty>
+	</select>
+	
+	<!-- 得到注册用户记录-->
+	<select id="selectUserList" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct a.id,a.userAcct,a.userPass,concat(concat(concat(a.userName,'('),a.userAcct),')') as userName,a.deleteFlag
+		from user_info a
+		where 1=1 
+		<isNotEmpty prepend="and" property="userAcct">
+			a.userAcct like '%$userAcct$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deleteFlag">
+			a.deleteFlag=#deleteFlag#
+		</isNotEmpty>
+		<isNotEmpty property="orderby">
+			order by $orderby$
+		</isNotEmpty>
+	</select>
+	
+	
+	<!-- 得到当前登陆人 的菜单权限 -->
+	<select id="getUserMenuRights" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct c.menu_todo
+		from menu_info c
+		where ( c.id in (
+		    select distinct b.menu_id
+		    from user_menu b
+		    where b.user_id = 
+		         ( select a.id
+		           from user_info a
+		           where a.userAcct='$login_user_acct$'
+		         )
+		) or c.id in (
+		    select distinct b.menu_id
+		    from role_menu b
+		    where b.role_id = 
+		         ( select a.userType
+		           from user_info a
+		           where a.userAcct='$login_user_acct$'
+		         )
+		) or c.is_default=1 ) and c.menu_status=#menu_status#
+	</select>
+	
+	<!-- 获取当前系统所有菜单 -->
+	<select id="getAllSysMenu" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct a.menu_todo
+		from menu_info a
+		where 1=1
+		<isNotEmpty prepend="and" property="status">
+			a.status <![CDATA[ = ]]> #menu_status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="menu_type">
+			a.menu_type <![CDATA[ = ]]> #menu_type#
+		</isNotEmpty>
+	</select>
+	
+	
+	<!-- 获取当前系统所有的菜单 -->
+	<select id="select_all_menu" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select table_a.* , (select count(menu_info.id) from menu_info where menu_info.f_id = table_a.id) as leaf_count 
+		from  
+		( select id,menu_name as text,f_id,menu_status,menu_todo,menu_type,is_default,frontS
+		  from menu_info a
+		)table_a
+		where table_a.f_id = #nowId# and menu_status = 1
+	</select>
+	
+	<!-- 判断用户是否有指定菜单权限 -->
+	<select id="select_user_menu_auth" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(id) 
+		from user_menu
+		where user_id='$userID$' and menu_id=#menu_id# 
+	</select>
+	
+	<!-- 判断角色是否有指定菜单权限 -->
+	<select id="select_role_menu_auth" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(id) 
+		from role_menu
+		where role_id='$roleID$' and menu_id=#menu_id# 
+	</select>
+	
+	<!-- 删除用户菜单表 -->
+	<update id="delete_user_menu" parameterClass="java.util.Map">
+		delete from user_menu
+		where user_id='$userId$'
+	</update>
+	
+	<!-- 删除角色菜单表 -->
+	<update id="delete_role_menu" parameterClass="java.util.Map">
+		delete from role_menu
+		where role_id='$roleID$'
+	</update>
+	
+	<!-- 新增用户菜单表 -->
+	<update id="insert_user_menu" parameterClass="java.util.Map">
+		insert into user_menu(user_id,menu_id)
+		values('$userId$','$menuId$')
+	</update>
+	
+	<!-- 新增角色菜单表 -->
+	<update id="insert_role_menu" parameterClass="java.util.Map">
+		insert into role_menu(role_id,menu_id)
+		values('$roleID$','$menuId$')
+	</update>
+	
+	<!-- 得到数据权限 -->
+	<select id="getUserDataRights" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select distinct a.projectName
+		from user_data a
+		where a.userId=#userId#
+	</select>
+	
+	<!-- 删除用户数据权限表 -->
+	<update id="delete_user_data" parameterClass="java.util.Map">
+		delete from user_data
+		where userId='$userId$'
+	</update>
+	
+	<!-- 新增用户数据权限表 -->
+	<update id="insert_user_data" parameterClass="java.util.Map">
+		insert into user_data(userId,projectName)
+		values('$userId$','$menuId$')
+	</update>
+	
+</sqlMap>
+
+
+
+
+
+
+
+
+

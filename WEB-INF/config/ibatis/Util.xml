@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Util">
+	
+	<!-- 新增操作日志记录 -->
+	<insert id="addOperationLog">
+		insert into operation_log(operator,opTable,opDes,detail,opTime)
+		values(#operator#,'$opTable$','$opDes$','$detail$','$opTime$')
+	</insert>
+	
+	<!-- 根据表名，获取MaxId -->
+	<select id="getMaxIdByTabName" resultClass="int" parameterClass="java.util.Map">
+		select IFNULL(max(id) ,0)
+		from $tableName$
+	</select>
+	
+	<update id="createTab">
+		$createTabSql$
+	</update>
+	
+	<update id="dropTab">
+		$dropTabSql$
+	</update>
+	
+	<update id="deleteViewMenu">
+		$deleteMenuSql$
+	</update>
+	
+	<select id="selTongJiTab" resultClass="float" parameterClass="java.util.Map">
+		select IFNULL(sum( $column_name$ ) ,0) as zongshu
+	    from $table_name$
+	    where deleteFlag=0 
+	    <isNotEmpty prepend="and" property="erjiguanlianzd">
+				erjiguanlianzd=#erjiguanlianzd#
+		</isNotEmpty>
+	    <isNotEmpty prepend="and" property="dataRight">
+				$dataRight$
+		</isNotEmpty>
+	    
+	</select>
+	
+	<update id="insertTongJiTab">
+			$tongJiSql$
+	</update>
+	
+	<update id="delTongJiTab">
+			$delTongJiSql$
+	</update>
+	
+	<select id="descTab" resultClass="java.util.HashMap" parameterClass="java.util.Map" remapResults="true">
+		<isNotEmpty prepend="" property="descTabSql">
+			$descTabSql$
+		</isNotEmpty>
+	</select>
+	
+	<select id="descTabCount" resultClass="int" parameterClass="java.util.Map" remapResults="true">
+		<isNotEmpty prepend="" property="descTabSql">
+			select count(*) from 
+			( $descTabSql$ ) table_a
+		</isNotEmpty>
+	</select>
+	
+	<select id="exeSql" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		<isNotEmpty prepend="" property="exeSql">
+			$exeSql$
+		</isNotEmpty>
+	</select>
+	
+	<select id="selecteGuanLianList" resultClass="java.util.HashMap" parameterClass="java.util.Map" remapResults="true">
+		select distinct a.$guanLianZiDuan$
+		from $guanLianBiao$ a
+		where 1=1 
+		<isNotEmpty prepend="and" property="deleteFlag">
+				a.deleteFlag<![CDATA[ = ]]>#deleteFlag#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="diaochamingchen_notin">
+				a.diaochamingchen not in ( select distinct b.diaochamingchen from wodexitongdiaocha b where b.tijiaoren=#diaochamingchen_notin# and b.deleteFlag=0 )
+		</isNotEmpty>
+		<isNotEmpty property="orderby">
+			order by $orderby$
+		</isNotEmpty>
+	</select>
+	
+	<select id="selecteGuanLianListCount" resultClass="int" parameterClass="java.util.Map" remapResults="true">
+			select count(*) from 
+			( 
+					select distinct a.$guanLianZiDuan$
+					from $guanLianBiao$ a
+					where 1=1 
+					<isNotEmpty prepend="and" property="diaochamingchen_notin">
+							a.diaochamingchen not in ( select distinct b.diaochamingchen from wodexitongdiaocha b where b.tijiaoren=#diaochamingchen_notin# and b.deleteFlag=0 )
+					</isNotEmpty>
+					<isNotEmpty prepend="and" property="deleteFlag">
+							a.deleteFlag<![CDATA[ = ]]>#deleteFlag#
+					</isNotEmpty>
+			 ) table_a
+	</select>
+	
+	<select id="selecteTuPianList" resultClass="java.util.HashMap" parameterClass="java.util.Map" remapResults="true">
+		select distinct SUBSTRING(a.picPath,LOCATE('/UploadFile/',a.picPath)) as picPath
+		from table_pic a
+		where 1=1
+		<isNotEmpty prepend="and" property="tuPianIndex">
+			a.tuPianIndex<![CDATA[ = ]]>#tuPianIndex#
+		</isNotEmpty>
+	</select>
+
+</sqlMap>
+
+
+
+
+
+
+
+
+

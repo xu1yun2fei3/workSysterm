@@ -1,0 +1,70 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-validator-1.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/nimrodlf-1.0g.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/httpcore-4.0-beta3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/tlddoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/jcommon-1.0.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-logging.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/httpcore-nio-4.0-beta3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/mysql-connector-java-5.1.7-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/jxl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/spring-webmvc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/log4j-1.2.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/serializer.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/ibatis-2.3.0.677.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-logging-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/velocity-tools-1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/jstl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-pool-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-zutil-0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/json-lib-ext-spring-1.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-beanutils-bean-collections.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/xercesImpl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/ant-launcher.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/jfreechart-1.0.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/spring.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-yloader-0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/taglibs-string.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-fileupload-1.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/velocity-tools-view-1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/ant.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/doccheck.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/velocity-dvsl-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/dom4j-1.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/ueditor-1.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/xml-apis.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/standard.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-codec-1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/hibernate3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/velocity-1.6.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/servlet-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/db2jcc_javax.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-lang.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/ezmorph-1.0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/jsmartcom_zh_CN.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-xeor-2.3.15bata.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/resolver.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/standard-1.0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/json-lib-2.2.3-jdk15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-digester-1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-collections-3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/db2jcc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-beanutils-1.8.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/db2jcc_license_cu.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/struts2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/tagunit.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-io-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-dbcp-1.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/commons-beanutils-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/activation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/lucene-core-2.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/mail-1.4.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WEB-INF/lib/velocity-tools-generic-1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

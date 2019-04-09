@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" 
+"http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings 
+		cacheModelsEnabled="true" 
+		enhancementEnabled="true" 
+		lazyLoadingEnabled="true"
+		errorTracingEnabled="true" 
+		maxRequests="256" 
+		maxSessions="50" 
+		maxTransactions="20" 
+		useStatementNamespaces="true" 
+	/>
+	<transactionManager type="JDBC">
+		<dataSource type="DBCP">
+			<property name="JDBC.Driver" value="${db_driver}" />
+			<property name="JDBC.ConnectionURL" value="${db_url}" />
+			<property name="JDBC.Username" value="${db_user}" />
+			<property name="JDBC.Password" value="${db_pwd}" />
+			<property name="Pool.MaximumActiveConnections" value="${maxConnection}" />
+			<property name="Pool.MaximumIdleConnections" value="5" />
+			<property name="Pool.MaximumCheckoutTime" value="5000" />
+			<property name="Pool.TimeToWait" value="500" />
+			<property name="Pool.PingQuery" value="select 1 from dual" />
+			<property name="Pool.PingEnabled" value="false" />
+			<property name="Pool.PingConnectionsOlderThan" value="1" />
+			<property name="Pool.PingConnectionsNotUsedFor" value="1" />
+		</dataSource>
+	</transactionManager>
+
+	<sqlMap url="file:///${SqlMapPath}/SystemManage.xml" />
+	<sqlMap url="file:///${SqlMapPath}/Util.xml" />
+	<sqlMap url="file:///${SqlMapPath}/UserManage.xml" />
+	<sqlMap url="file:///${SqlMapPath}/OrganizeManage.xml" />
+	<sqlMap url="file:///${SqlMapPath}/FrontIndex.xml" />
+	<sqlMap url="file:///${SqlMapPath}/Lanmuguanli.xml" /> 
+
+    <sqlMap url="file:///${SqlMapPath}/Shouyehuandengpian.xml" />
+
+
+	<sqlMap url="file:///${SqlMapPath}/Wenzhangguanli.xml" /> 
+	
+	<sqlMap url="file:///${SqlMapPath}/SystemRoleManage.xml" /> 
+	
+	
+	
+	<sqlMap url="file:///${SqlMapPath}/Fabuxitongdiaocha.xml" /> 
+	<sqlMap url="file:///${SqlMapPath}/Wodexitongdiaocha.xml" /> 
+	
+	
+	
+	<sqlMap url="file:///${SqlMapPath}/Zhannaxiaoxi.xml" /> 
+	<sqlMap url="file:///${SqlMapPath}/Xitongxiaoxi.xml" /> 
+	<sqlMap url="file:///${SqlMapPath}/Wodeyijianxiang.xml" /> 
+	<sqlMap url="file:///${SqlMapPath}/Wodepinglun.xml" /> 
+
+<sqlMap url="file:///${SqlMapPath}/Gangweishezhi.xml" /> 
+<sqlMap url="file:///${SqlMapPath}/Bumenxinxi.xml" /> 
+<sqlMap url="file:///${SqlMapPath}/Yuangongxinxi.xml" /> 
+<sqlMap url="file:///${SqlMapPath}/Pingdingdengji.xml" /> 
+<sqlMap url="file:///${SqlMapPath}/Kaopingxiangmushezhi.xml" /> 
+
+<sqlMap url="file:///${SqlMapPath}/Pingdingfenshu.xml" /> 
+<sqlMap url="file:///${SqlMapPath}/Pingdingmingxi.xml" /> 
+
+<sqlMap url="file:///${SqlMapPath}/Kaohepingdingfabu.xml" /> 
+<sqlMap url="file:///${SqlMapPath}/Woyaopingding.xml" /> 
+<sqlMap url="file:///${SqlMapPath}/Pingdingjieguo.xml" /> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</sqlMapConfig>

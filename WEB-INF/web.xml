@@ -1,0 +1,70 @@
+<!--
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+-->
+<web-app>
+	<!-- 欢迎页面 -->
+	<welcome-file-list>
+		<welcome-file>/WEB-ROOT/app/login/login.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- Spring Framework-->
+	<servlet>
+		<servlet-name>Dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<!-- jstl 
+			<param-value>/WEB-INF/config/spring/spring-bean.xml</param-value>
+			-->
+			<!-- velocity -->
+			<param-value>/WEB-INF/config/spring/spring-bean-4-velocity.xml</param-value>
+			
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- other mapping -->
+	
+	<!-- 验证用户是否登陆以及权限判断 
+	<filter>
+		<filter-name>RightsFilter</filter-name>
+		<filter-class>app.pub.filter.RightsFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>RightsFilter</filter-name>
+		<url-pattern>/WEB-ROOT/app/*</url-pattern>
+	</filter-mapping>
+	-->
+	
+	<!-- ExportExecl Servlet -->
+	<servlet>
+		<servlet-name>ExportExeclServlet</servlet-name>
+		<servlet-class>app.pub.exportExcel.ExportExeclServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ExportExeclServlet</servlet-name>
+		<url-pattern>/servlet/ExportExeclServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>RegisterServlet</servlet-name>
+		<servlet-class>app.register.RegisterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RegisterServlet</servlet-name>
+		<url-pattern>/servlet/RegisterServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>DisplayChart</servlet-name>
+		<servlet-class>org.jfree.chart.servlet.DisplayChart</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DisplayChart</servlet-name>
+		<url-pattern>/servlet/displayChart</url-pattern>
+	</servlet-mapping>
+	
+</web-app>

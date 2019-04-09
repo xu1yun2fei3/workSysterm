@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>新用户注册</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="content-Type" content="text/html" charset="gb2312">
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/register/style6/css/index.css">
+
+<script type="text/javascript" src="/WEB-ROOT/app/register/style6/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/app/register/style6/js/index.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+  
+  <script type="text/javascript">
+  	function doSubmit(){
+		    var userAcct = document.getElementById("userAcct").value ; 
+		    var userName = document.getElementById("userName").value ; 
+			var userPass = document.getElementById("userPass").value ; 
+			if( userAcct == "" ){
+				alert( "帐号为空，请填写！" );
+				return ;
+			}
+			if( userPass == "" ){
+				alert( "登录密码为空，请填写！" );
+				return ;
+			}
+			if( userName == "" ){
+				alert( "昵称为空，请填写！" );
+				return ;
+			}
+			
+			Ext.Ajax.request({
+				waitMsg : '数据提交中......',
+				url : '/login.do',
+				method : 'POST',
+				success : function(response, options) {
+					var responseArray = Ext.util.JSON.decode(response.responseText);
+					if(responseArray.success){
+						Ext.MessageBox.alert( "系统提示","注册成功！" , function(){ window.location.href = "/" ; });
+						
+					}else{
+						Ext.MessageBox.alert( responseArray.msg );
+					}
+				},
+				params : {
+					flag : "doRegister",
+					userAcct : userAcct ,
+					userPass : userPass , 
+					userName : userName
+				}
+			});
+			
+		}
+  </script>
+  
+</head>
+<body>
+<div class="content">
+		<div class="ucSimpleHeader">
+			<a href="##" class="meizuLogo"></a>
+			<div class="trigger">
+				<a href="##">登录</a>
+				<span>&nbsp;|&nbsp;</span>
+				<a href="##">注册</a>
+			</div>
+		</div>
+		<form id="#mainForm2" class="mainForm mainForm2">
+			<div class="number">
+				<a href="##" class="linkAGray2">新账户注册</a>
+			</div>
+			<div class="normalInput">
+				<input type="text" id="userAcct" name="userAcct" class="username" maxlength="16" placeholder="账户名" autocomplete="off">
+			</div>
+			<span class="error error1"></span>		
+			<div class="normalInput">
+				<input type="password" id="userPass" name="userPass" class="passwordN" maxlength="16" autocomplete="off" placeholder="密码">
+			</div>
+			<span class="error error3"></span>	
+			<div class="normalInput">
+				<input type="text"  id="userName" name="userName" maxlength="18" placeholder="用户昵称" autocomplete="off">
+			</div>
+			<span class="error error2"></span>
+			<div class="rememberField">
+				<span class="checkboxPic check_chk" tabindex="-1" isshow="false">
+					<i class="i_icon"></i>
+				</span>
+				<label class="pointer">我已阅读并接受</label>
+			</div>
+			<a href="#" class="fullBtnBlue" onclick="doSubmit();">注册</a>
+		</form>
+		
+	</div>
+	
+	</div>
+	
+	<div id="mz_Float">
+		<div class="mz_FloatBox">
+			<div class="mz3AngleL">
+				<i class="i_icon"></i>
+			</div>
+			<div class="mzFloatTip bRadius2">长度为1-16个字符</div>
+		</div>
+	</div>
+	<div style="text-align:center;">
+</div>
+</body>
+</html>

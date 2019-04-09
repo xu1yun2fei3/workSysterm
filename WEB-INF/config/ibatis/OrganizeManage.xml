@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="OrganizeManage">
+	
+	<sql id="orderby">
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderby">$orderby$</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 得到组织记录条数-->
+	<select id="selectOrgnizeListCount" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(*) from (
+			select a.id,a.orgName,a.fID,a.authorizeNum,a.orgManager,
+				   DATE_FORMAT(a.startTime,'%Y-%m-%d %T') as startTime,
+				   DATE_FORMAT(a.endTime,'%Y-%m-%d %T') as endTime,
+				   a.detail,a.deleteFlag,b.userName as orgManagerName,
+				   (select orgName from organize_info where id=a.fID) as fOrgName	
+			from organize_info a left join user_info_detail b on a.orgManager = b.userId
+			where 1=1 
+			<isNotEmpty prepend="and" property="id">
+				a.id<![CDATA[ = ]]>#id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="orgNameSearch">
+				a.orgName like '%$orgNameSearch$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="startTimeBeginSearch">
+				DATE_FORMAT(a.startTime,'%Y-%m-%d %T') <![CDATA[ >= ]]> DATE_FORMAT(#startTimeBeginSearch#,'%Y-%m-%d %T')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="startTimeEndSearch">
+				DATE_FORMAT(a.startTime,'%Y-%m-%d %T') <![CDATA[ <= ]]> DATE_FORMAT(#startTimeEndSearch#,'%Y-%m-%d %T')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="endTimeBeginSearch">
+				DATE_FORMAT(a.endTime,'%Y-%m-%d %T') <![CDATA[ >= ]]> DATE_FORMAT(#endTimeBeginSearch#,'%Y-%m-%d %T')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="endTimeEndSearch">
+				DATE_FORMAT(a.endTime,'%Y-%m-%d %T') <![CDATA[ <= ]]> DATE_FORMAT(#endTimeEndSearch#,'%Y-%m-%d %T')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="orgManagerSearch">
+				a.orgManager<![CDATA[ = ]]>#orgManagerSearch#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="authorizeNumSearch">
+				a.authorizeNum<![CDATA[ = ]]>#authorizeNumSearch#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="deleteFlagSearch">
+				a.deleteFlag<![CDATA[ = ]]>#deleteFlagSearch#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="fIDSearch">
+				a.fID<![CDATA[ = ]]>#fIDSearch#
+			</isNotEmpty>
+			<isParameterPresent>
+				<include refid="OrganizeManage.orderby" />
+			</isParameterPresent>
+		)table_a
+	</select>
+	
+	<!-- 得到组织记录-->
+	<select id="selectOrgnizeList" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select a.id,a.orgName,a.fID,a.authorizeNum,a.orgManager,a.fName,
+			   DATE_FORMAT(a.startTime,'%Y-%m-%d %T') as startTime,
+			   DATE_FORMAT(a.endTime,'%Y-%m-%d %T') as endTime,
+			   a.detail,a.deleteFlag,b.userName as orgManagerName,
+			   (select orgName from organize_info where id=a.fID) as fOrgName	
+		from organize_info a left join user_info_detail b on a.orgManager = b.userId
+		where 1=1 
+		<isNotEmpty prepend="and" property="id">
+			a.id<![CDATA[ = ]]>#id#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="orgNameSearch">
+			a.orgName like '%$orgNameSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startTimeBeginSearch">
+			DATE_FORMAT(a.startTime,'%Y-%m-%d %T') <![CDATA[ >= ]]> DATE_FORMAT(#startTimeBeginSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="startTimeEndSearch">
+			DATE_FORMAT(a.startTime,'%Y-%m-%d %T') <![CDATA[ <= ]]> DATE_FORMAT(#startTimeEndSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endTimeBeginSearch">
+			DATE_FORMAT(a.endTime,'%Y-%m-%d %T') <![CDATA[ >= ]]> DATE_FORMAT(#endTimeBeginSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endTimeEndSearch">
+			DATE_FORMAT(a.endTime,'%Y-%m-%d %T') <![CDATA[ <= ]]> DATE_FORMAT(#endTimeEndSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="orgManagerSearch">
+			a.orgManager<![CDATA[ = ]]>#orgManagerSearch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="authorizeNumSearch">
+			a.authorizeNum<![CDATA[ = ]]>#authorizeNumSearch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deleteFlagSearch">
+			a.deleteFlag<![CDATA[ = ]]>#deleteFlagSearch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fIDSearch">
+			a.fID<![CDATA[ = ]]>#fIDSearch#
+		</isNotEmpty>
+		<isParameterPresent>
+			<include refid="OrganizeManage.orderby" />
+		</isParameterPresent>
+	</select>
+	
+	<!-- 得到组织记录(树形)-->
+	<select id="selectOrgnizeListForTree" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select a.id,a.orgName as text,a.fID,a.authorizeNum,a.orgManager,a.fName,
+			   DATE_FORMAT(a.startTime,'%Y-%m-%d %T') as startTime,
+			   DATE_FORMAT(a.endTime,'%Y-%m-%d %T') as endTime,
+			   a.detail,a.deleteFlag,b.userName as orgManagerName,
+			   (select orgName from organize_info where id=a.fID) as fOrgName,
+			   (select count(c.id) from organize_info c where a.id=c.fID ) as leaf_count	
+		from organize_info a , user_info_detail b
+		where 1=1 and a.orgManager = b.userId and a.fID=#fID#
+		<isParameterPresent>
+			<include refid="OrganizeManage.orderby" />
+		</isParameterPresent>
+	</select>
+	
+	<!-- 判断同级组织是否存在相同名字-->
+	<select id="hasSameOrgName" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select distinct count(a.id)
+		from organize_info a
+		where a.orgName='$orgName$' and a.deleteFlag=0
+		<isNotEmpty prepend="and" property="fID">
+			a.fID<![CDATA[ = ]]>#fID#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="id">
+			a.id<![CDATA[ <> ]]>#id#
+		</isNotEmpty>
+	</select>
+	
+	<!-- 新增组织-->
+	<update id="insertNewOrg" parameterClass="java.util.Map">
+		insert into organize_info(orgName,fID,fName,authorizeNum,startTime,endTime,orgManager,detail,deleteFlag) 
+		values('$orgName$','$fID$','$fName$',$authorizeNum$,now(), #endTime#,'$orgManager$','$detail$',0)
+	</update>
+	
+	<!-- 修改组织-->
+	<update id="updateOrg" parameterClass="java.util.Map">
+		update organize_info 
+		set orgName='$orgName$',fID=#fID#,fName='$fName$',authorizeNum=#authorizeNum#,endTime=#endTime#,orgManager='$orgManager$',detail='$detail$'
+		where id=#id#
+	</update>
+	
+	<!-- 冻结或解冻组织-->
+	<update id="doDeleOrUnDele" parameterClass="java.util.Map">
+		update organize_info 
+		set deleteFlag=#deleteFlag#
+		<isEqual property="deleteFlag" compareValue="0">
+			,endTime<![CDATA[ = ]]>null
+		</isEqual>
+		<isEqual property="deleteFlag" compareValue="1">
+			,endTime<![CDATA[ = ]]>now()
+		</isEqual>
+		where id in ( $id$ )
+	</update>
+	
+	<!-- 组织下的子组织 -->
+	<select id="getSubOrgTree" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select a.orgName as text,a.id , (select count(*) from organize_info b where a.id=b.fid) as subNodeCount
+		from organize_info a
+		where a.fID = #nowId# and a.deleteFlag=0
+	</select>
+
+	
+</sqlMap>
+
+
+
+
+
+
+
+
+

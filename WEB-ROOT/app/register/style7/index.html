@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>用户注册</title>
+
+<!-- Meta-Tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript">addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+
+<script type="text/javascript">
+  	function doSubmit(){
+		    var userAcct = document.getElementById("userAcct").value ; 
+		    var userName = document.getElementById("userName").value ; 
+			var userPass = document.getElementById("userPass").value ; 
+			if( userAcct == "" ){
+				alert( "帐号为空，请填写！" );
+				return ;
+			}
+			if( userPass == "" ){
+				alert( "登录密码为空，请填写！" );
+				return ;
+			}
+			if( userName == "" ){
+				alert( "昵称为空，请填写！" );
+				return ;
+			}
+			
+			Ext.Ajax.request({
+				waitMsg : '数据提交中......',
+				url : '/login.do',
+				method : 'POST',
+				success : function(response, options) {
+					var responseArray = Ext.util.JSON.decode(response.responseText);
+					if(responseArray.success){
+						Ext.MessageBox.alert( "系统提示","注册成功！" , function(){ window.location.href = "/" ; });
+						
+					}else{
+						Ext.MessageBox.alert( responseArray.msg );
+					}
+				},
+				params : {
+					flag : "doRegister",
+					userAcct : userAcct ,
+					userPass : userPass , 
+					userName : userName
+				}
+			});
+			
+		}
+  </script>
+
+<link rel="stylesheet" href="/WEB-ROOT/app/register/style7/css/style.css" type="text/css" media="all">
+
+<link rel="stylesheet" href="/WEB-ROOT/app/register/style7/css/jquery-ui.css" type="text/css" media="all">
+
+
+
+</head>
+<!-- //Head -->
+
+
+
+<!-- Body -->
+<body>
+
+	<h1>用户注册</h1>
+
+	<div class="containerw3layouts-agileits">
+
+		<div class="w3imageaits">
+			<img class="user" src="/WEB-ROOT/app/register/style7/images/user.png" alt="Custom Signup Form">
+			<h2>没有账号？</h2>
+			<p>请注册吧</p>
+		</div>
+
+		<div class="aitsloginwthree w3layouts agileits">
+				<form action="#" method="post">
+				<div style="height:80px;">
+				</div>
+				<input type="text" id="userAcct" name="userAcct" placeholder="账号" maxlength="16" required="">
+				<input type="text"  id="userName" name="userName" maxlength="18"  placeholder="昵称" required="">
+				<input type="password" id="userPass" name="userPass" placeholder="密码" maxlength="16" required="">
+				<div style="height:100px;">
+				</div>
+				<div class="send-button wthree agileits">
+					<input type="button" value="注册" onclick="doSubmit();">
+				</div>
+				</form>
+		</div>
+
+		<div class="clear"></div>
+
+	</div>
+
+	<div class="w3lsfooteragileits"></div>
+
+
+
+	<!-- Necessary-JavaScript-Files-&-Links -->
+
+	<!-- Default-JavaScript -->
+	<script type="text/javascript" src="/WEB-ROOT/app/register/style7/js/jquery-3.1.1.js"></script>
+
+	<!-- Date-Picker-JavaScript -->
+	<script src="/WEB-ROOT/app/register/style7/js/jquery-ui.js"></script>
+	<script>
+		$(function() {
+			$("#datepicker1").datepicker();
+		});
+	</script>
+	<!-- //Date-Picker-JavaScript -->
+
+	<!-- //Necessary-JavaScript-Files-&-Links -->
+
+
+
+</body>
+<!-- //Body -->
+
+
+
+</html>

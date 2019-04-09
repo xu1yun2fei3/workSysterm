@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>登录</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/WEB-ROOT/app/login/style22/css/flexslider.css" type="text/css" media="screen" /> <!-- Flexslider-CSS -->
+<link href="/WEB-ROOT/app/login/style22/css/font-awesome.css" rel="stylesheet"><!-- Font-awesome-CSS --> 
+<link href="/WEB-ROOT/app/login/style22/css/style.css" rel='stylesheet' type='text/css'/><!-- Stylesheet-CSS -->
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>	
+
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js"></script>
+	<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js"></script>
+	<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="/WEB-ROOT/skin/js/pub/global/global.js"></script>
+	
+    <script type="text/javascript">
+    	function doSubmit(){
+				
+				var username = document.getElementById("username").value ;
+				var password = document.getElementById("password").value ;
+				if( username == "" ){
+					alert("账户名不能为空！");
+					doFocus('username');
+					return ;
+				}
+				if( password == "" ){
+					alert("登陆密码不能为空！");
+					doFocus('password');
+					return ;
+				}
+				
+				/*
+				if( !validate () ){ 
+					return ;
+				}
+				*/
+				
+				ajaxLogin();
+			}
+			
+			function doKeyPress(){
+				if ( window.event.keyCode == 13 ){
+					 doSubmit();
+				}
+			}
+			
+			function ajaxLogin(){
+				Ext.Ajax.request({
+					waitMsg : '数据提交中......',
+					url : '/login.do',
+					method : 'POST',
+					success : function(response, options) {
+						var responseArray = Ext.util.JSON.decode(response.responseText);
+						if(responseArray.success){
+							window.location.href = LOGIN_SUCC_GO_PAGE ;
+						}else{
+							alert(responseArray.msg);
+						}
+					},
+					params : {
+						flag : "doLogin",
+						username : document.getElementById("username").value ,
+						password : document.getElementById("password").value
+					}
+				});
+			} 
+	    
+	    	function doRegiste(){
+				 window.location.href = "/WEB-ROOT/app/login/register.jsp" ;
+			}
+    </script>
+
+</head>
+<body>
+	<h1>用户登录</h1>
+	<div class="main-agile">
+		<div class="alert-close"> </div>
+		<div class="content-wthree">
+			<div class="about-middle">
+			<section class="slider">
+			<div class="flexslider">
+				<ul class="slides">
+				  <li>
+					<div class="banner-bottom-2">			  		
+						<div class="about-midd-main">
+							<img class="agile-img" src="/WEB-ROOT/app/login/style22/images/t1.jpg" alt=" " class="img-responsive">
+							<h4></h4>
+						</div>
+					</div>
+				  </li>
+				 <li>
+					<div class="banner-bottom-2">			  		
+						<div class="about-midd-main">
+							<img class="agile-img" src="/WEB-ROOT/app/login/style22/images/t2.jpg" alt=" " class="img-responsive">
+							<h4></h4>
+						</div>
+					</div>
+				  </li>
+				  <li>
+					<div class="banner-bottom-2">			  		
+						<div class="about-midd-main">
+							<img class="agile-img" src="/WEB-ROOT/app/login/style22/images/t3.jpg" alt=" " class="img-responsive">
+							<h4></h4>
+						</div>
+					</div>
+				  </li>
+				</ul>
+			</div>
+			<div class="clear"> </div>
+		  </section>
+		</div>
+		<div class="new-account-form">
+		<h2 class="heading-w3-agile"></h2>
+			<form action="#" method="post">
+			<div class="inputs-w3ls">
+				<p>用户账号</p>
+				<i class="fa fa-envelope" aria-hidden="true"></i>
+					<input type="text" class="email" name="username" id="username" placeholder="" required="">
+			</div>
+			<div class="inputs-w3ls">
+				<p>用户密码</p>
+				<i class="fa fa-unlock-alt" aria-hidden="true"></i>
+					<input type="password" class="password" name="password" id="password" placeholder="" required="">
+			</div>
+					<a href="#" onclick="doRegiste()"> <font color="white">没有账号？点我注册吧</font> </a>
+						<input type="button" onclick="doSubmit();" value="登    录">  
+			</form> 
+		</div>
+		<div class="clear"> </div>
+
+		</div>
+	</div>
+	
+<script src="/WEB-ROOT/app/login/style22/js/jquery.min.js"></script>
+<script>$(document).ready(function(c) {
+		$('.alert-close').on('click', function(c){
+			$('.main-agile').fadeOut('slow', function(c){
+				$('.main-agile').remove();
+			});
+		});	  
+	});
+</script>
+	<!-- FlexSlider -->
+				  <script defer src="/WEB-ROOT/app/login/style22/js/jquery.flexslider.js"></script>
+				  <script type="text/javascript">
+					$(function(){
+					 
+					});
+					$(window).load(function(){
+					  $('.flexslider').flexslider({
+						animation: "slide",
+						start: function(slider){
+						  $('body').removeClass('loading');
+						}
+					  });
+					});
+				  </script>
+		<!-- FlexSlider -->
+
+</body>
+</html>
